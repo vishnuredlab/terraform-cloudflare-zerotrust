@@ -7,7 +7,7 @@ terraform {
   }
 }
 
-# Improved Intune integration
+# Intune integration with correct API and Auth URLs
 resource "cloudflare_zero_trust_device_posture_integration" "intune_integration" {
   account_id = var.account_id
   name       = "Microsoft Intune Integration"
@@ -15,21 +15,15 @@ resource "cloudflare_zero_trust_device_posture_integration" "intune_integration"
   interval   = "15m"
   
   config {
-    client_id     = var.intune_client_id
-    client_secret = var.intune_client_secret
-    customer_id   = var.azure_tenant_id
+    client_id         = var.intune_client_id
+    client_secret     = var.intune_client_secret
+    customer_id       = var.azure_tenant_id
+    auth_url          = "https://login.microsoftonline.com/${var.azure_tenant_id}/oauth2/v2.0/token"
+    api_url           = "https://graph.microsoft.com"
   }
   
   lifecycle {
     create_before_destroy = true
-  }
-}
-
-# Using removed block to safely remove the domain_joined_check resource
-removed {
-  from = cloudflare_zero_trust_device_posture_rule.domain_joined_check
-  lifecycle {
-    destroy = false
   }
 }
 
@@ -44,7 +38,7 @@ resource "cloudflare_zero_trust_device_posture_rule" "intune_compliance" {
     compliance_status = "compliant"
     connection_id     = cloudflare_zero_trust_device_posture_integration.intune_integration.id
   }
-  
+
   depends_on = [cloudflare_zero_trust_device_posture_integration.intune_integration]
 }
 
@@ -52,7 +46,7 @@ resource "cloudflare_zero_trust_device_posture_rule" "intune_compliance" {
 resource "cloudflare_zero_trust_device_posture_rule" "os_version_windows" {
   account_id  = var.account_id
   name        = "Windows OS Version Check"
-  description = "Ensure Windows devices are running supported OS version"
+  description = "Ensure Windows devices are running a supported OS version"
   type        = "os_version"
   
   match {
@@ -60,7 +54,7 @@ resource "cloudflare_zero_trust_device_posture_rule" "os_version_windows" {
   }
   
   input {
-    version = "10.0.0"  # Fixed semver format
+    version  = "10.0.0"  # Fixed semver format
     operator = ">="
   }
   
@@ -81,7 +75,7 @@ resource "cloudflare_zero_trust_device_posture_rule" "disk_encryption" {
   depends_on = [cloudflare_zero_trust_device_posture_integration.intune_integration]
 }
 
-# Firewall Check - additional security
+# Firewall Check
 resource "cloudflare_zero_trust_device_posture_rule" "firewall_check" {
   account_id  = var.account_id
   name        = "Firewall Status Check"
