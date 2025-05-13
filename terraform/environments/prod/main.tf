@@ -2,7 +2,7 @@ terraform {
   cloud {
     organization = "REDDOMELAB"
     workspaces {
-      name = "terraform-cloudflare-Zerotrust"
+      name = "terraform-cloudflare-zerotrust"
     }
   }
 
