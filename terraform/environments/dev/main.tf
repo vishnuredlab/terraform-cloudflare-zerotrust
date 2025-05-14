@@ -15,9 +15,7 @@ terraform {
 }
 
 provider "cloudflare" {
-  api_key   = var.cloudflare_api_key
-  email     = var.cloudflare_email
-  account_id = var.cloudflare_account_id
+  api_token = var.api_token
 }
 
 module "warp" {

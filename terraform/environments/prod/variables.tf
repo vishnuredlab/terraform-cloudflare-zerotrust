@@ -30,14 +30,10 @@ variable "intune_client_secret" {
   sensitive   = true
 }
 
-variable "cloudflare_api_key" {
-  description = "Cloudflare Global API Key"
+variable "api_token" {
+  description = "Cloudflare API Token with Zero Trust permissions"
   type        = string
-}
-
-variable "cloudflare_email" {
-  description = "Cloudflare account email"
-  type        = string
+  sensitive   = true
 }
 
 # Red team configuration

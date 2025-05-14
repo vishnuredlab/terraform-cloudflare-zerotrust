@@ -1,18 +1,13 @@
-variable "cloudflare_api_key" {
-  description = "Cloudflare Global API Key"
-  type        = string
-}
-
-variable "cloudflare_email" {
-  description = "Cloudflare account email"
-  type        = string
-}
-
-variable "cloudflare_account_id" {
+variable "account_id" {
   description = "Cloudflare Account ID"
   type        = string
 }
 
+variable "api_token" {
+  description = "Cloudflare API Token"
+  type        = string
+  sensitive   = true
+}
 
 variable "azure_client_id" {
   description = "Azure AD Client ID"
