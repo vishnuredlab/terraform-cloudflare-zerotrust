@@ -15,13 +15,13 @@ terraform {
 }
 
 provider "cloudflare" {
-  api_token = var.api_token
+  api_token = "kL7lFTOLBiGlgslxW4tADvbMJvhbXJDg_yXQ9ldg"
   retries   = 3
 }
 
 # Global Zero Trust configuration
 resource "cloudflare_zero_trust_gateway_settings" "zero_trust" {
-  account_id = var.account_id
+  account_id = "7cddccd98a674da8afe19d066889da04"
 }
 
 module "idp" {
